@@ -14,12 +14,13 @@ class PostsController < ApplicationController
   def create
     response = PostCreationService.new(user, post_params[:content]).execute
     response.apply(self)
-
+    @post.author_ip = request.remote_ip
     if @post.save
-      render json: @post, status: :created, location: @post
+      render json: @post, status: 200, location: @post
     else
-      render json: @post.errors, status: :unprocessable_entity
+      render json: @post.errors, status: 422
     end
+    
   end
 
   def update
