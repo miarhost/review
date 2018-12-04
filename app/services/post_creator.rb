@@ -1,9 +1,13 @@
-class PostCreationService
+class PostCreator
 include ActiveModel::Validations 
 
-  attribute :title, String
-  attribute :author_ip, String
+  attr_accessor :post
   validates_presence_of :title, :content
+  
+  def initialize(post)
+    @post = post
+  end
+
 
   def execute
     raise ArgumentError.new("Invalid record") unless self.valid?
@@ -11,6 +15,6 @@ include ActiveModel::Validations
       API::post("/posts", self.attributes),
       :symbolize_names => true
     )
-    Post.new(response)
+    @post = Post.new(response)
     end
 end

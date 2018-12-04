@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_action :set_post, only: [:show, :update, :destroy]
+
 
   def index
     @posts = Post.all
@@ -12,11 +12,11 @@ class PostsController < ApplicationController
   end
 
   def create
-    response = PostCreationService.new(user, post_params[:content]).execute
-    response.apply(self)
-    @post.author_ip = request.remote_ip
+  @post = Post.new(title: post_params[:title], content: post_params[:content], author_ip: post_params[:author_ip], user_id: post_params[:user_id])
+  @post.user_id = @post.user.id
+   @post.author_ip = request.remote_ip
     if @post.save
-      render json: @post, status: 200, location: @post
+      render json: @post, status: 200, location: @posts
     else
       render json: @post.errors, status: 422
     end
@@ -36,12 +36,9 @@ class PostsController < ApplicationController
   end
 
   private
-   
-    def set_post
-      @post = Post.find(params[:id])
-    end
 
-    def post_params
-      params.require(:post).permit(:title, :content, :author_ip, :user_id)
-    end
+  def post_params
+   params.require(:post).permit(:title, :content, :author_ip, :user_id)
+  end
+
 end
