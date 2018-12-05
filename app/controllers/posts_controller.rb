@@ -9,6 +9,7 @@ class PostsController < ApplicationController
 
   def show
     render json: @post
+    #render json: @mark.rating
   end
 
   def create
@@ -16,7 +17,7 @@ class PostsController < ApplicationController
   @post.user_id = @post.user.id
    @post.author_ip = request.remote_ip
     if @post.save
-      render json: @post, status: 200, location: @posts
+      render json: @post, status: 200, location: @post
     else
       render json: @post.errors, status: 422
     end

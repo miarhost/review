@@ -10,7 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_28_152708) do
+ActiveRecord::Schema.define(version: 2018_12_05_092450) do
+
+  create_table "marks", force: :cascade do |t|
+    t.integer "value"
+    t.integer "post_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["post_id"], name: "index_marks_on_post_id"
+  end
 
   create_table "posts", force: :cascade do |t|
     t.string "title"
